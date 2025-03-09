@@ -1,7 +1,10 @@
 <?php
+  include('database\database.php');
   include('partials\header.php');
   include('partials\sidebar.php');
 
+$sql = "SELECT * FROM pure_pour";
+$pure_pour = $conn->query($sql);
 
   // Your PHP BACK CODE HERE
 
@@ -10,7 +13,7 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Employee Information Management System</h1>
+      <h1>Pure Pour Management System</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
@@ -31,7 +34,7 @@
                   <h5 class="card-title">Default Table</h5>
                 </div>
                 <div>
-                  <button class="btn btn-primary btn-sm mt-4 mx-3">Add Employee</button>
+                  <button class="btn btn-primary btn-sm mt-4 mx-3">Add Order</button>
                 </div>
               </div>
 
@@ -40,128 +43,28 @@
                 <thead>
                   <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Position</th>
-                    <th scope="col">Age</th>
-                    <th scope="col">Address</th>
-                    <th scope="col" class="text-center">Action</th>
+                    <th scope="col">Customer Name</th>
+                    <th scope="col">Drink Name</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Flavor</th>
+                    <th scope="col">Preference</th>
+                    <th scope="col">Size</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Service Type</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <th scope="row">1</th>
-                    <td>Brandon Jacob</td>
-                    <td>Designer</td>
-                    <td>28</td>
-                    <td>2016-05-25</td>
-                    <td class="d-flex justify-content-center">
-                      <button class="btn btn-success btn-sm mx-1">Edit</button>
-                      <button class="btn btn-primary btn-sm mx-1" title="View Employee Information" data-bs-toggle="modal" data-bs-target="#editInfo">View</button>
-                      <button class="btn btn-danger btn-sm mx-1">Delete</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>Bridie Kessler</td>
-                    <td>Developer</td>
-                    <td>35</td>
-                    <td>2014-12-05</td>
-                    <td class="d-flex justify-content-center">
-                      <button class="btn btn-success btn-sm mx-1">Edit</button>
-                      <button class="btn btn-primary btn-sm mx-1" title="View Employee Information" data-bs-toggle="modal" data-bs-target="#editInfo">View</button>
-                      <button class="btn btn-danger btn-sm mx-1">Delete</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td>Ashleigh Langosh</td>
-                    <td>Finance</td>
-                    <td>45</td>
-                    <td>2011-08-12</td>
-                    <td class="d-flex justify-content-center">
-                      <button class="btn btn-success btn-sm mx-1">Edit</button>
-                      <button class="btn btn-primary btn-sm mx-1" title="View Employee Information" data-bs-toggle="modal" data-bs-target="#editInfo">View</button>
-                      <button class="btn btn-danger btn-sm mx-1">Delete</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">4</th>
-                    <td>Angus Grady</td>
-                    <td>HR</td>
-                    <td>34</td>
-                    <td>2012-06-11</td>
-                    <td class="d-flex justify-content-center">
-                      <button class="btn btn-success btn-sm mx-1">Edit</button>
-                      <button class="btn btn-primary btn-sm mx-1" title="View Employee Information" data-bs-toggle="modal" data-bs-target="#editInfo">View</button>
-                      <button class="btn btn-danger btn-sm mx-1">Delete</button>
-                    </td>
-                  </tr>
-                  <tr>
                     <th scope="row">5</th>
-                    <td>Raheem Lehner</td>
-                    <td>Dynamic Division Officer</td>
+                    <td>Diether Resulta</td>
+                    <td></td>
                     <td>47</td>
                     <td>2011-04-19</td>
-                    <td class="d-flex justify-content-center">
-                      <button class="btn btn-success btn-sm mx-1">Edit</button>
-                      <button class="btn btn-primary btn-sm mx-1" title="View Employee Information" data-bs-toggle="modal" data-bs-target="#editInfo">View</button>
-                      <button class="btn btn-danger btn-sm mx-1">Delete</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>Brandon Jacob</td>
-                    <td>Designer</td>
-                    <td>28</td>
-                    <td>2016-05-25</td>
-                    <td class="d-flex justify-content-center">
-                      <button class="btn btn-success btn-sm mx-1">Edit</button>
-                      <button class="btn btn-primary btn-sm mx-1" title="View Employee Information" data-bs-toggle="modal" data-bs-target="#editInfo">View</button>
-                      <button class="btn btn-danger btn-sm mx-1">Delete</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>Bridie Kessler</td>
-                    <td>Developer</td>
-                    <td>35</td>
-                    <td>2014-12-05</td>
-                    <td class="d-flex justify-content-center">
-                      <button class="btn btn-success btn-sm mx-1">Edit</button>
-                      <button class="btn btn-primary btn-sm mx-1" title="View Employee Information" data-bs-toggle="modal" data-bs-target="#editInfo">View</button>
-                      <button class="btn btn-danger btn-sm mx-1">Delete</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td>Ashleigh Langosh</td>
-                    <td>Finance</td>
-                    <td>45</td>
-                    <td>2011-08-12</td>
-                    <td class="d-flex justify-content-center">
-                      <button class="btn btn-success btn-sm mx-1">Edit</button>
-                      <button class="btn btn-primary btn-sm mx-1" title="View Employee Information" data-bs-toggle="modal" data-bs-target="#editInfo">View</button>
-                      <button class="btn btn-danger btn-sm mx-1">Delete</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">4</th>
-                    <td>Angus Grady</td>
-                    <td>HR</td>
-                    <td>34</td>
-                    <td>2012-06-11</td>
-                    <td class="d-flex justify-content-center">
-                      <button class="btn btn-success btn-sm mx-1">Edit</button>
-                      <button class="btn btn-primary btn-sm mx-1" title="View Employee Information" data-bs-toggle="modal" data-bs-target="#editInfo">View</button>
-                      <button class="btn btn-danger btn-sm mx-1">Delete</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">5</th>
-                    <td>Raheem Lehner</td>
-                    <td>Dynamic Division Officer</td>
-                    <td>47</td>
-                    <td>2011-04-19</td>
+                    <td>Diether Resulta</td>
+                    <td>Diether Resulta</td>
+                    <td>Diether Resulta</td>
+                    <td>Diether Resulta</td>
+                    <td>Diether Resulta</td>
                     <td class="d-flex justify-content-center">
                       <button class="btn btn-success btn-sm mx-1">Edit</button>
                       <button class="btn btn-primary btn-sm mx-1" title="View Employee Information" data-bs-toggle="modal" data-bs-target="#editInfo">View</button>
