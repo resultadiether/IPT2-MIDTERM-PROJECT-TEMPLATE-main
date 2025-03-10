@@ -46,7 +46,6 @@ $pure_pour = $conn->query($sql);
                     <th scope="col">Customer Name</th>
                     <th scope="col">Drink Name</th>
                     <th scope="col">Category</th>
-                    <th scope="col">Flavor</th>
                     <th scope="col">Preference</th>
                     <th scope="col">Size</th>
                     <th scope="col">Price</th>
@@ -57,14 +56,12 @@ $pure_pour = $conn->query($sql);
                   <tr>
                     <th scope="row">5</th>
                     <td>Diether Resulta</td>
-                    <td></td>
-                    <td>47</td>
-                    <td>2011-04-19</td>
-                    <td>Diether Resulta</td>
-                    <td>Diether Resulta</td>
-                    <td>Diether Resulta</td>
-                    <td>Diether Resulta</td>
-                    <td>Diether Resulta</td>
+                    <td>Cookies & Cream</td>
+                    <td>Milktea</td>
+                    <td>Less Ice</td>
+                    <td>Medium</td>
+                    <td>55</td>
+                    <td>Dine-In</td>
                     <td class="d-flex justify-content-center">
                       <button class="btn btn-success btn-sm mx-1">Edit</button>
                       <button class="btn btn-primary btn-sm mx-1" title="View Employee Information" data-bs-toggle="modal" data-bs-target="#editInfo">View</button>
