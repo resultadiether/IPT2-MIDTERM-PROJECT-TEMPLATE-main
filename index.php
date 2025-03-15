@@ -75,11 +75,58 @@
                       <td><?php echo $row['PRICE']; ?></td>
                       <td><?php echo $row['SERVICE_TYPE']; ?></td>
                       <td class="d-flex justify-content-center">
-                        <a href="database/update.php?id=<?php echo $row['CUSTOMER_ID']; ?>" class="btn btn-success btn-sm mx-1">Edit</a>
+                      <button class="btn btn-success btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#editOrderModal<?php echo $row['CUSTOMER_ID']; ?>">Edit</button>
                         <a href="database/view.php?id=<?php echo $row['CUSTOMER_ID']; ?>" class="btn btn-primary btn-sm mx-1">View</a>
                         <a href="database/delete.php?CUSTOMER_ID=<?php echo $row['CUSTOMER_ID']; ?>" class="btn btn-danger btn-sm mx-1" onclick="return confirm('Are you sure you want to delete this record?');">Delete</a>
                       </td>
                     </tr>
+
+                    <!-- Edit Order Modal -->
+                    <div class="modal fade" id="editOrderModal<?php echo $row['CUSTOMER_ID']; ?>" tabindex="-1" aria-labelledby="editOrderModalLabel<?php echo $row['CUSTOMER_ID']; ?>" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="editOrderModalLabel<?php echo $row['CUSTOMER_ID']; ?>">Edit Order</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            <form method="POST" action="database/update.php?id=<?php echo $row['CUSTOMER_ID']; ?>">
+                              <div class="mb-3">
+                                <label for="CUSTOMER_NAME" class="form-label">Customer Name</label>
+                                <input type="text" class="form-control" id="CUSTOMER_NAME" name="CUSTOMER_NAME" value="<?php echo $row['CUSTOMER_NAME']; ?>" required>
+                              </div>
+                              <div class="mb-3">
+                                <label for="DRINK_NAME" class="form-label">Drink Name</label>
+                                <input type="text" class="form-control" id="DRINK_NAME" name="DRINK_NAME" value="<?php echo $row['DRINK_NAME']; ?>" required>
+                              </div>
+                              <div class="mb-3">
+                                <label for="CATEGORY" class="form-label">Category</label>
+                                <input type="text" class="form-control" id="CATEGORY" name="CATEGORY" value="<?php echo $row['CATEGORY']; ?>" required>
+                              </div>
+                              <div class="mb-3">
+                                <label for="PREFERENCE" class="form-label">Preference</label>
+                                <input type="text" class="form-control" id="PREFERENCE" name="PREFERENCE" value="<?php echo $row['PREFERENCE']; ?>" required>
+                              </div>
+                              <div class="mb-3">
+                                <label for="SIZE" class="form-label">Size</label>
+                                <input type="text" class="form-control" id="SIZE" name="SIZE" value="<?php echo $row['SIZE']; ?>" required>
+                              </div>
+                              <div class="mb-3">
+                                <label for="PRICE" class="form-label">Price</label>
+                                <input type="text" class="form-control" id="PRICE" name="PRICE" value="<?php echo $row['PRICE']; ?>" required>
+                              </div>
+                              <div class="mb-3">
+                                <label for="SERVICE_TYPE" class="form-label">Service Type</label>
+                                <input type="text" class="form-control" id="SERVICE_TYPE" name="SERVICE_TYPE" value="<?php echo $row['SERVICE_TYPE']; ?>" required>
+                              </div>
+                              <button type="submit" class="btn btn-primary">Update Order</button>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- End Edit Order Modal -->
+
                   <?php endwhile; ?>
                 <?php else : ?>
                   <tr>
@@ -88,16 +135,21 @@
                 <?php endif; ?>
               </tbody>
             </table>
+
             <!-- End Default Table Example -->
-          </div>
+            </div>
           <div class="mx-4">
             <nav aria-label="Page navigation example">
               <ul class="pagination">
-                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                <?php if ($page > 1): ?>
+                  <li class="page-item"><a class="page-link" href="index.php?page=<?php echo $page - 1; ?>">Previous</a></li>
+                <?php endif; ?>
+                <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                  <li class="page-item <?php if ($i == $page) echo 'active'; ?>"><a class="page-link" href="index.php?page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+                <?php endfor; ?>
+                <?php if ($page < $total_pages): ?>
+                  <li class="page-item"><a class="page-link" href="index.php?page=<?php echo $page + 1; ?>">Next</a></li>
+                <?php endif; ?>
               </ul>
             </nav>
           </div>

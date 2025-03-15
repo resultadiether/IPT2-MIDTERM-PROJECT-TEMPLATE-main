@@ -1,40 +1,27 @@
 <?php
-include('../database/database.php');
-
-if (isset($_GET['id'])) {
-  $id = $_GET['id'];
-
-  // Fetch the current details of the music entry
-  $sql = "SELECT * FROM pure_pour WHERE id = $id";
-  $result = $conn->query($sql);
-
-  if ($result->num_rows > 0) {
-    $row = $result->fetch_assoc();
-  } else {
-    die("Record not found");
-  }
-} else {
-  die("No ID provided");
-}
+session_start();
+include('database.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $CUSTOMER_NAME = $_POST['Customer'];
-    $DRINK_NAME = $_POST['Drinks'];
-    $CATEGORY = $_POST['Category'];
-    $PREFERENCE = $_POST['Preference'];
-    $SIZE = $_POST['Sizes'];
-    $PRICE = $_POST['Price'];
-    $SERVICE_TYPE = $_POST['Services'];
+    $CUSTOMER_ID = $_POST['CUSTOMER_ID'];
+    $CUSTOMER_NAME = $_POST['CUSTOMER_NAME'];
+    $DRINK_NAME = $_POST['DRINK_NAME'];
+    $CATEGORY = $_POST['CATEGORY'];
+    $PREFERENCE = $_POST['PREFERENCE'];
+    $SIZE = $_POST['SIZE'];
+    $PRICE = $_POST['PRICE'];
+    $SERVICE_TYPE = $_POST['SERVICE_TYPE'];
 
-  $sql = "UPDATE music SET Customer = '$CUSTOMER_NAME', Drinks = '$DRINK_NAME', Category = '$CATEGORY', Preference = '$PREFERENCE', Sizes = '$SIZE', Price = '$PRICE', Services = '$SERVICE_TYPE'  WHERE id = $id";
+  $sql = "UPDATE pure_pour SET CUSTOMER_NAME = '$CUSTOMER_NAME', DRINK_NAME = '$DRINK_NAME', CATEGORY = '$CATEGORY', PREFERENCE = '$PREFERENCE', SIZE = '$SIZE', PRICE = '$PRICE', SERVICE_TYPE = '$SERVICE_TYPE'  WHERE CUSTOMER_ID = '$CUSTOMER_ID'";
 
-  if ($conn->query($sql)) {
-    $status = "Record updated successfully";
+  if (mysqli_query($conn, $sql)) {
+    $_SESSION['status'] = "Order updated successfully";
   } else {
-    $status = "Error: " . $sql . "<br>" . $conn->error;
+    $SESSION['status'] = "Error";
   }
+
   mysqli_close($conn);
-  header("Location: ../index.php?status=$status");
+  header("Location: ../index.php");
   exit();
 }
 ?>
