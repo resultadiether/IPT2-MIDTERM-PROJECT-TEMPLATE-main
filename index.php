@@ -171,9 +171,32 @@
     </div>
     <!-- End Modal -->
 
+    <!-- View Pure Pour Modal -->
+    <div class="modal fade" id="viewPurePourModal<?php echo $row['CUSTOMER_ID']; ?>" tabindex="-1" aria-labelledby="viewPurePourModalLabel" aria-hidden="true">
+      <div class="modal-dialog">">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="viewPurePourModalLabel<?php echo $row['CUSTOMER_ID']; ?>">Pure Pour Details</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p><strong>id:</strong> <?php echo $row['CUSTOMER_ID']; ?></p>
+            <p><strong>Customer Name:</strong> <?php echo $row['CUSTOMER_NAME']; ?></p>
+            <p><strong>Drink Name:</strong> <?php echo $row['DRINK_NAME']; ?></p>
+            <p><strong>Category:</strong> <?php echo $row['CATEGORY']; ?></p>
+            <p><strong>Prefence:</strong> <?php echo $row['PREFERENCE']; ?></p>
+            <p><strong>Size:</strong> <?php echo $row['SIZE']; ?></p>
+            <p><strong>Price:</strong> <?php echo $row['PRICE']; ?></p>
+            <p><strong>Service_Type:</strong> <?php echo $row['SERVICE_TYPE']; ?></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Modal -->
+
   </section>
 
-</main><!-- End #main -->
+</main><!-- End View Pure Pour Modal -->
 
 <?php
 include('partials/footer.php');
