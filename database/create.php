@@ -1,4 +1,5 @@
 <?php
+session_start();
 include '../database/database.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -13,9 +14,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $sql = "INSERT INTO pure_pour (CUSTOMER_NAME, DRINK_NAME, CATEGORY, PREFERENCE, SIZE, PRICE, SERVICE_TYPE) 
             VALUES ('$CUSTOMER_NAME', '$DRINK_NAME', '$CATEGORY', '$PREFERENCE', '$SIZE', '$PRICE', '$SERVICE_TYPE')";
 
-    $status = $conn->query($sql) === TRUE ? "New record created successfully" : "Error: {$sql}<br>{$conn->error}";
+    if (mysqli_query($conn, $sql)) {
+        $_SESSION['status'] = "Add order successfully";
+    } else {
+        $_SESIION['status_code'] = "Error";  
+    }
 
     mysqli_close($conn);
-    header("Location: ../index.php?status=$status");
+    header("Location: ../index.php");
     exit();
 }
+
+?>
