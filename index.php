@@ -90,6 +90,7 @@
                           </div>
                           <div class="modal-body">
                             <form method="POST" action="database/update.php?id=<?php echo $row['CUSTOMER_ID']; ?>">
+                              <input type="hidden" name="CUSTOMER_ID" value="<?php echo $row['CUSTOMER_ID']; ?>">
                               <div class="mb-3">
                                 <label for="CUSTOMER_NAME" class="form-label">Customer Name</label>
                                 <input type="text" class="form-control" id="CUSTOMER_NAME" name="CUSTOMER_NAME" value="<?php echo $row['CUSTOMER_NAME']; ?>" required>

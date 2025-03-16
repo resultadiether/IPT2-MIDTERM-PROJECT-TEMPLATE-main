@@ -14,12 +14,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Use the correct code to resolve the conflict
     $stmt = $conn->prepare("UPDATE pure_pour SET CUSTOMER_NAME = ?, DRINK_NAME = ?, CATEGORY = ?, PREFERENCE = ?, SIZE = ?, PRICE = ?, SERVICE_TYPE = ? WHERE CUSTOMER_ID = ?");
+    if ($stmt === false) {
+        $_SESSION['status'] = "Error preparing statement: " . $conn->error;
+        header("Location: ../index.php");
+        exit();
+    }
+
     $stmt->bind_param("sssssdsi", $CUSTOMER_NAME, $DRINK_NAME, $CATEGORY, $PREFERENCE, $SIZE, $PRICE, $SERVICE_TYPE, $CUSTOMER_ID);
 
     if ($stmt->execute()) {
         $_SESSION['status'] = "Order updated successfully";
     } else {
-        $_SESSION['status'] = "Error: " . $stmt->error;
+        $_SESSION['status'] = "Error executing statement: " . $stmt->error;
     }
 
     $stmt->close();
