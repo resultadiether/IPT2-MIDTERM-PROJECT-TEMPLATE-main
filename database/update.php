@@ -12,16 +12,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $PRICE = $_POST['PRICE'];
     $SERVICE_TYPE = $_POST['SERVICE_TYPE'];
 
-  $sql = "UPDATE pure_pour SET CUSTOMER_NAME = '$CUSTOMER_NAME', DRINK_NAME = '$DRINK_NAME', CATEGORY = '$CATEGORY', PREFERENCE = '$PREFERENCE', SIZE = '$SIZE', PRICE = '$PRICE', SERVICE_TYPE = '$SERVICE_TYPE'  WHERE CUSTOMER_ID = '$CUSTOMER_ID'";
+    // Use the correct code to resolve the conflict
+    $stmt = $conn->prepare("UPDATE pure_pour SET CUSTOMER_NAME = ?, DRINK_NAME = ?, CATEGORY = ?, PREFERENCE = ?, SIZE = ?, PRICE = ?, SERVICE_TYPE = ? WHERE CUSTOMER_ID = ?");
+    $stmt->bind_param("sssssdsi", $CUSTOMER_NAME, $DRINK_NAME, $CATEGORY, $PREFERENCE, $SIZE, $PRICE, $SERVICE_TYPE, $CUSTOMER_ID);
 
-  if (mysqli_query($conn, $sql)) {
-    $_SESSION['status'] = "Order updated successfully";
-  } else {
-    $SESSION['status'] = "Error";
-  }
+    if ($stmt->execute()) {
+        $_SESSION['status'] = "Order updated successfully";
+    } else {
+        $_SESSION['status'] = "Error: " . $stmt->error;
+    }
 
-  mysqli_close($conn);
-  header("Location: ../index.php");
-  exit();
+    $stmt->close();
+    $conn->close();
+    header("Location: ../index.php");
+    exit();
 }
 ?>

@@ -73,20 +73,19 @@
                       <td><?php echo $row['PREFERENCE']; ?></td>
                       <td><?php echo $row['SIZE']; ?></td>
                       <td><?php echo $row['PRICE']; ?></td>
-                      <td><?php echo $row['SERVICE_TYPE']; ?></td>
+                       <td><?php echo $row['SERVICE_TYPE']; ?></td>
                       <td class="d-flex justify-content-center">
                       <button class="btn btn-success btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#editOrderModal<?php echo $row['CUSTOMER_ID']; ?>">Edit</button>
                         <a href="database/view.php?id=<?php echo $row['CUSTOMER_ID']; ?>" class="btn btn-primary btn-sm mx-1">View</a>
                         <a href="database/delete.php?CUSTOMER_ID=<?php echo $row['CUSTOMER_ID']; ?>" class="btn btn-danger btn-sm mx-1" onclick="return confirm('Are you sure you want to delete this record?');">Delete</a>
                       </td>
                     </tr>
-
-                    <!-- Edit Order Modal -->
-                    <div class="modal fade" id="editOrderModal<?php echo $row['CUSTOMER_ID']; ?>" tabindex="-1" aria-labelledby="editOrderModalLabel<?php echo $row['CUSTOMER_ID']; ?>" aria-hidden="true">
+                      <!-- Edit Order Modal -->
+    <div class="modal fade" id="editOrderModal<?php echo $row['CUSTOMER_ID']; ?>" tabindex="-1" aria-labelledby="editOrderModalLabel<?php echo $row['CUSTOMER_ID']; ?>" aria-hidden="true">
                       <div class="modal-dialog">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h5 class="modal-title" id="editOrderModalLabel<?php echo $row['CUSTOMER_ID']; ?>">Edit Order</h5>
+                            <h5 class="modal-title" id="editOrderModaatedlLabel<?php echo $row['CUSTOMER_ID']; ?>">Edit Order</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                           </div>
                           <div class="modal-body">
@@ -126,7 +125,6 @@
                       </div>
                     </div>
                     <!-- End Edit Order Modal -->
-
                   <?php endwhile; ?>
                 <?php else : ?>
                   <tr>
@@ -157,6 +155,7 @@
 
       </div>
     </div>
+
 
     <!-- Add Order Modal -->
     <div class="modal fade" id="addOrderModal" tabindex="-1" aria-labelledby="addOrderModalLabel" aria-hidden="true">
@@ -203,6 +202,7 @@
       </div>
     </div>
     <!-- End Add Order Modal -->
+     
 
     <!-- Modal -->
     <div class="modal fade" id="editInfo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editInfoLabel" aria-hidden="true">
