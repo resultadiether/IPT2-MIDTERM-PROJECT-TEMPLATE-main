@@ -2,6 +2,8 @@
   include('database/database.php');
   include('partials/header.php');
   include('partials/sidebar.php');
+  include('database/database.php');
+  include('database/search.php');
 
   $results_per_page = 10; // Number of results per page
   $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -17,6 +19,7 @@
 
   if (!$pure_pour) 
     die("Query failed: " . $conn->error);
+
 ?>
 
 <main id="main" class="main">
@@ -31,6 +34,15 @@
       </ol>
     </nav>
   </div><!-- End Page Title -->
+  <?php
+                // USE SEARCH QUERY FROM search.php
+                if (!empty($search)) {
+                    $query_run = mysqli_query($conn, $query);
+                } else {
+                    $query = "SELECT * FROM pure_pour LIMIT $start, $limit";
+                    $query_run = mysqli_query($conn, $query);
+                }
+              ?>
 
   <section class="section">
     <div class="row">
@@ -57,12 +69,16 @@
                   <th scope="col">CATEGORY</th>
                   <th scope="col">PREFERENCE</th>
                   <th scope="col">SIZE</th>
-                  <th scope="col">PRICE</th>
+                  <th scope="col">PRICE(php)</th>
                   <th scope="col">SERVICE</th>
                   <th scope="col">ACTIONS</th>
                 </tr>
               </thead>
               <tbody>
+                <?php
+                if ($query_run) {
+                foreach ($query_run as $row) {
+                ?>
                 <?php if ($pure_pour->num_rows > 0) : ?>
                   <?php while ($row = $pure_pour->fetch_assoc()) : ?>
                     <tr>
@@ -129,10 +145,16 @@
                   <?php endwhile; ?>
                 <?php else : ?>
                   <tr>
-                    <td colspan="9" class="text-center">No records found</td>
+                    <td colspan="8" class="text-center">No records found</td>
                   </tr>
                 <?php endif; ?>
               </tbody>
+              <?php
+                }
+              }else {
+                echo "<tr><td colspan='8' class='text-center'>No records found</td></tr>";
+              }
+              ?>
             </table>
 
             <!-- End Default Table Example -->

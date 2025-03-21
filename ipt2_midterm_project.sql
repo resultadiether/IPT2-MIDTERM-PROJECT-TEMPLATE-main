@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 16, 2025 at 09:18 AM
+-- Generation Time: Mar 21, 2025 at 09:57 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -28,46 +28,58 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `pure_pour` (
-  `CUSTOMER_ID` bigint(255) NOT NULL,
-  `CUSTOMER_NAME` text NOT NULL,
-  `DRINK_NAME` text NOT NULL,
-  `CATEGORY` text NOT NULL,
-  `PREFERENCE` text NOT NULL,
-  `SIZE` text NOT NULL,
+  `CUSTOMER_ID` int(11) NOT NULL,
+  `CUSTOMER_NAME` varchar(255) NOT NULL,
+  `DRINK_NAME` varchar(255) NOT NULL,
+  `CATEGORY` varchar(255) NOT NULL,
+  `PREFERENCE` varchar(255) NOT NULL,
+  `SIZE` varchar(255) NOT NULL,
   `PRICE` varchar(255) NOT NULL,
-  `SERVICE_TYPE` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `SERVICE_TYPE` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8m;
+
+-- --------------------------------------------------------
 
 --
--- Dumping data for table `pure_pour`
+-- Table structure for table `users`
 --
 
-INSERT INTO `pure_pour` (`CUSTOMER_ID`, `CUSTOMER_NAME`, `DRINK_NAME`, `CATEGORY`, `PREFERENCE`, `SIZE`, `PRICE`, `SERVICE_TYPE`) VALUES
-(3, 'Christian Macaranas', 'Tea tea', 'Milk Tea', 'More ice', 'Large', '100', 'Take Out'),
-(8, 'Rochelle', 'Tower', 'Alcohol', 'Strong', 'Large', '120', 'Dine in'),
-(9, 'Lyra Mae', 'GIN', 'BEER', '100%ALCOHOL', 'EXTRA LARGE', '0', 'Take Out'),
-(10, 'Diether', 'Coffee', 'Cafe ', 'Strong and Sweet', 'Large Cup', '120', 'Dine in'),
-(11, 'Diether', 'royal', 'softdrinks', 'cold', 'Large Cup', '0', 'Dine in');
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `username`, `password`, `email`) VALUES
+(1, 'haha', '$2y$10$rF49EJqs2eKZeC9aqkMGWuuQf3ezKbOgRQrM4oSmvMRDA0iWrx3Lq', 'haha@gmail.com');
 
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `pure_pour`
---
 ALTER TABLE `pure_pour`
   ADD PRIMARY KEY (`CUSTOMER_ID`);
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
-
+ALTER TABLE 'pure_pour'
+  MODIFY 'CUSTOMER_ID' int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `pure_pour`
+-- AUTO_INCREMENT for table `users`
 --
-ALTER TABLE `pure_pour`
-  MODIFY `CUSTOMER_ID` bigint(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

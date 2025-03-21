@@ -1,31 +1,66 @@
 <?php
 session_start();
-include('config.php'); // Include your database connection file
+include 'database/database.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-    $email = $_POST['email'];
-
-    // Check if the username already exists
-    $query = "SELECT * FROM users WHERE username='$username'";
-    $result = mysqli_query($conn, $query);
-
-    if (mysqli_num_rows($result) == 0) {
-        // Insert new user into the database
-        $query = "INSERT INTO users (username, password, email) VALUES ('$username', '$password', '$email')";
-        if (mysqli_query($conn, $query)) {
-            $_SESSION['username'] = $username;
-            header("Location: dashboard.php"); // Redirect to dashboard after successful registration
-        } else {
-            $error = "Error: " . mysqli_error($conn);
-        }
-    } else {
-        $error = "Username already exists";
+    $username = trim($_POST["username"]);
+    $email = trim($_POST["email"]);
+    $password = $_POST["password"];
+    
+    // CHECK IF ANY FIELD IS EMPTY
+    if (empty($username) || empty($email) || empty($password)) {
+        $_SESSION["error"] = "All fields are required.";
+        header("Location: register.php");
+        exit();
     }
-}
 
+    // CHECK VALID EMAIL FORMAT
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $_SESSION["error"] = "Invalid email format.";
+        header("Location: register.php");
+        exit();
+    }
+
+    // CHECK PASSWORD LENGTH
+    if (strlen($password) < 6) {
+        $_SESSION["error"] = "Password must be at least 6 characters.";
+        header("Location: register.php");
+        exit();
+    }
+
+    // CHECK IF USERNAME OR EMAIL ALREADY EXISTS
+    $check_sql = "SELECT id FROM users WHERE username = ? OR email = ?";
+    $check_stmt = $conn->prepare($check_sql);
+    $check_stmt->bind_param("ss", $username, $email);
+    $check_stmt->execute();
+    $check_stmt->store_result();
+
+    if ($check_stmt->num_rows > 0) {
+        $_SESSION["error"] = "Username or Email is already taken.";
+        header("Location: register.php");
+        exit();
+    }
+    $check_stmt->close();
+
+    // HASH PASSWORD AND INSERT NEW USER
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    $sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sss", $username, $email, $hashed_password);
+
+    if ($stmt->execute()) {
+        $_SESSION["success"] = "Account created successfully. Please log in.";
+        header("Location: login.php"); // REDIRECT TO LOGIN ONLY IF REGISTRATION IS SUCCESSFUL
+        exit();
+    } else {
+        $_SESSION["error"] = "Registration failed. Please try again.";
+    }
+
+    $stmt->close();
+    $conn->close();
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Pages / Register - Pure Pour</title>
+  <title>Pages / Register - NiceAdmin Bootstrap Template</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -67,8 +102,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
-
-  <main>
+  
+  <main class="mainbody">
     <div class="container">
 
       <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
@@ -79,7 +114,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <div class="d-flex justify-content-center py-4">
                 <a href="index.html" class="logo d-flex align-items-center w-auto">
                   <img src="assets/img/logo.png" alt="">
-                  <span class="d-none d-lg-block">Pure Pour</span>
+                  <span class="d-none d-lg-block">NiceAdmin</span>
                 </a>
               </div><!-- End Logo -->
 
@@ -87,52 +122,58 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 <div class="card-body">
 
+                  <?php if (isset($_SESSION["error"])): ?> 
+                    <div class="alert alert-danger" style="margin-top: 20px; padding-bottom: 0; padding-top: 0; margin-bottom: 0;"> 
+                      <?php 
+                        echo $_SESSION["error"]; 
+                        unset($_SESSION["error"]);
+                      ?>
+                    </div>
+                  <?php endif; ?>
+
+
                   <div class="pt-4 pb-2">
                     <h5 class="card-title text-center pb-0 fs-4">Create an Account</h5>
                     <p class="text-center small">Enter your personal details to create account</p>
                   </div>
 
-                  <form class="row g-3 needs-validation" novalidate>
+                  <form action="register.php" method="POST" class="row g-3 needs-validation" novalidate>
                     <div class="col-12">
-                      <label for="yourName" class="form-label">Username</label>
-                      <input type="text" name="name" class="form-control" id="yourName" required>
-                      <div class="invalid-feedback">Please, enter your username!</div>
-                    </div>
-
-                    <div class="col-12">
-                      <label for="yourEmail" class="form-label">Surname</label>
-                      <input type="email" name="email" class="form-control" id="yourEmail" required>
-                      <div class="invalid-feedback"></div>
-                    </div>
-
-                    <div class="col-12">
-                      <label for="yourUsername" class="form-label">Email</label>
-                      <div class="input-group has-validation">
-                        <span class="input-group-text" id="inputGroupPrepend">@</span>
-                        <input type="text" name="username" class="form-control" id="yourUsername" required>
-                        <div class="invalid-feedback">Please Enter a valid Email</div>
+                        <label for="yourUsername" class="form-label">Username</label>
+                        <div class="input-group has-validation">
+                          <span class="input-group-text" id="inputGroupPrepend">@</span>
+                          <input type="text" name="username" class="form-control" id="yourUsername" required>
+                          <div class="invalid-feedback">Please choose a username.</div>
+                        </div>
                       </div>
-                    </div>
 
-                    <div class="col-12">
-                      <label for="yourPassword" class="form-label">Password</label>
-                      <input type="password" name="password" class="form-control" id="yourPassword" required>
-                      <div class="invalid-feedback">Please enter your password!</div>
-                    </div>
-
-                    <div class="col-12">
-                      <div class="form-check">
-                        <input class="form-check-input" name="terms" type="checkbox" value="" id="acceptTerms" required>
-                        <label class="form-check-label" for="acceptTerms">I agree and accept the <a href="#">terms and conditions</a></label>
-                        <div class="invalid-feedback">You must agree before submitting.</div>
+                      <div class="col-12">
+                        <label for="yourEmail" class="form-label">Your Email</label>
+                        <input type="email" name="email" class="form-control" id="yourEmail" required>
+                        <div class="invalid-feedback">Please enter a valid Email adddress!</div>
                       </div>
-                    </div>
-                    <div class="col-12">
-                      <button class="btn btn-primary w-100" type="submit">Create Account</button>
-                    </div>
-                    <div class="col-12">
-                      <p class="small mb-0">Already have an account? <a href="pages-login.html">Log in</a></p>
-                    </div>
+
+                      <div class="col-12">
+                        <label for="yourPassword" class="form-label">Password</label>
+                        <input type="password" name="password" class="form-control" id="yourPassword" required>
+                        <div class="invalid-feedback">Please enter your password!</div>
+                      </div>
+
+                      <div class="col-12">
+                        <div class="form-check">
+                          <input class="form-check-input" name="terms" type="checkbox" value="" id="acceptTerms" required>
+                          <label class="form-check-label" for="acceptTerms">I agree and accept the <a href="#">terms and conditions</a></label>
+                          <div class="invalid-feedback">You must agree before submitting.</div>
+                        </div>
+                      </div>
+
+                      <div class="col-12">
+                        <button class="btn btn-primary w-100" type="submit">Create Account</button>
+                      </div>
+                      
+                      <div class="col-12">
+                        <p class="small mb-0">Already have an account? <a href="login.php">Log in</a></p>
+                      </div>
                   </form>
 
                 </div>
@@ -143,7 +184,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <!-- You can delete the links only if you purchased the pro version. -->
                 <!-- Licensing information: https://bootstrapmade.com/license/ -->
                 <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-                Designed by <a href="Group 8">Group 8</a>
+                Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
               </div>
 
             </div>
